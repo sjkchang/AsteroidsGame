@@ -2,14 +2,67 @@
 public void setup() 
 {
   //your code here
+  size(600, 600);
+  background(255);
 }
 public void draw() 
 {
+  SpaceShip s1 = new SpaceShip();
+  s1.show();  
+  if( key == 'd')
+  {
+      s1.rotate(5);
+  }
+  if(key == 'a')
+  {
+    s1.rotate(-5);
+  }
+  if(key == 'w')
+  {
+    public s1.accelerate(5);
+  }
   //your code here
+
+
 }
-class SpaceShip //extends Floater  
+class SpaceShip extends Floater  
 {   
     //your code here
+    public SpaceShip()
+    {
+      corners = 4;
+      xCorners = new int[corners];
+      yCorners = new int[corners];
+      xCorners[0] = -8;
+      yCorners[0] = -8;
+      xCorners[1] = 16;
+      yCorners[1] = 0;
+      xCorners[2] = -8;
+      yCorners[2] = 8;
+      xCorners[3] = -2;
+      yCorners[3] = 0;
+      myCenterX = 300;
+      myCenterY = 300;
+      myPointDirection = 0;
+      myDirectionX = .1;
+      myDirectionY = .1;
+    }
+    public void setX(int x){ myCenterX = x;}
+    public int getX(){ return (int) myCenterX;}
+    public void setY(int y){ myCenterY = y;}
+    public int getY(){ return (int) myCenterY;}
+    public void setDirectionX(double x){ myDirectionX = x;}
+    public double getDirectionX (){ return (double) myDirectionX; }
+    public void setDirectionY(double y){ myDirectionY = y;}
+    public double getDirectionY (){ return (double) myDirectionY; }
+    public void setPointDirection( int degrees){ myPointDirection = degrees;}
+    public double getPointDirection(){ return (int) myPointDirection; }
+
+
+    
+
+
+
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
