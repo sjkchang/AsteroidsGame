@@ -1,35 +1,35 @@
 //your variable declarations here
 Spaceship s1 = new Spaceship();
+Star[] stars;
 public void setup() 
 {
   //your code here
   size(700, 700);
   background(0);
+  stars = new Star[(int)(Math.random()*30 +30   )];
+  for(int i = 0; i < stars.length; i++)
+  {
+    stars[i] = new Star((int)(Math.random()*700),(int)(Math.random()*700));
+  }
 }
 public void draw() 
 {
   
   background(0);
   s1.move();
-  s1.show();  
-
+  s1.show();
+  for(int i = 0; i < stars.length; i ++)
+  {  
+    stars[i].show();  
+  }
 
   //your code here
 }
 public void keyPressed()
 {
-    if( key == 'd')
-  {
-      s1.rotate(5);
-  }
-  if(key == 'a')
-  {
-      s1.rotate(-5);
-  }
-  if(key == 'w')
-  {
-      s1.accelerate(.1);
-  }
+  if( key == 'd'){s1.rotate(15);}
+  if(key == 'a'){s1.rotate(-15);}
+  if(key == 'w'){s1.accelerate(.1);}
   if(key == ' ')
   {
     s1.setX((int)(Math.random()*700));
@@ -39,6 +39,19 @@ public void keyPressed()
     s1.setPointDirection((int)(Math.random()*360)); 
   }
 
+}
+public class Star
+{
+    int myX, myY;
+    public Star(int x, int y)
+    {
+      myX = x;
+      myY = y;
+    }
+    public void show()
+    {
+      ellipse(myX, myY, 1, 1);
+    }
 }
 class Spaceship extends Floater  
 {   
@@ -73,13 +86,8 @@ class Spaceship extends Floater
     public double getDirectionY (){ return (double) myDirectionY; }
     public void setPointDirection( int degrees){ myPointDirection = degrees;}
     public double getPointDirection(){ return (int) myPointDirection; }
-
-
-    
-
-
-
 }
+
 abstract class Floater //Do NOT modify the Floater class! Make changes in the Spaceship class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
