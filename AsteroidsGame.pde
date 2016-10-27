@@ -6,7 +6,7 @@ public void setup()
   //your code here
   size(700, 700);
   background(0);
-  stars = new Star[(int)(Math.random()*30 +30   )];
+  stars = new Star[(int)(Math.random()*30 + 30)];
   for(int i = 0; i < stars.length; i++)
   {
     stars[i] = new Star((int)(Math.random()*700),(int)(Math.random()*700));
@@ -29,7 +29,13 @@ public void keyPressed()
 {
   if( key == 'd'){s1.rotate(15);}
   if(key == 'a'){s1.rotate(-15);}
-  if(key == 'w'){s1.accelerate(.1);}
+  if(key == 'w')
+    {
+      s1.rocket();
+      s1.accelerate(.1);
+
+
+    }
   if(key == ' ')
   {
     s1.setX((int)(Math.random()*700));
@@ -51,6 +57,7 @@ public class Star
     public void show()
     {
       ellipse(myX, myY, 1, 1);
+      
     }
 }
 class Spaceship extends Floater  
@@ -75,6 +82,8 @@ class Spaceship extends Floater
       myPointDirection = 0;
       myDirectionX = 0;
       myDirectionY = 0;
+
+
     }
     public void setX(int x){ myCenterX = x;}
     public int getX(){ return (int) myCenterX;}
@@ -86,6 +95,17 @@ class Spaceship extends Floater
     public double getDirectionY (){ return (double) myDirectionY; }
     public void setPointDirection( int degrees){ myPointDirection = degrees;}
     public double getPointDirection(){ return (int) myPointDirection; }
+
+    public void rocket()
+    {
+    
+
+      fill(255);
+      line((float)myCenterX - 10, (float)myCenterY + 5, (float)myCenterX - 20, (float)myCenterY + 5);
+      line((float)myCenterX - 10, (float)myCenterY, (float)myCenterX - 25, (float)myCenterY);
+      line((float)myCenterX - 10, (float)myCenterY - 5, (float)myCenterX - 20, (float)myCenterY - 5);
+    }
+
 }
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the Spaceship class 
