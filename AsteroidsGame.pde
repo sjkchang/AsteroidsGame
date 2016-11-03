@@ -38,8 +38,8 @@ public void draw()
 }
 public void keyPressed()
 {
-  if( key == 'd'){s1.rotate(15);}
-  if(key == 'a'){s1.rotate(-15);}
+  if( key == 'd'){s1.rotate(10);}
+  if(key == 'a'){s1.rotate(-10);}
   if(key == 'w')
     {
       s1.rocket();
@@ -70,6 +70,39 @@ public class Star
       ellipse(myX, myY, 2, 2);
       
     }
+}
+public class Bullet extends Floater
+{
+  public Bullet(Spaceship s1)
+  {
+    myColor = 255;
+    corners = 4;
+    myCenterX = s1.getX();
+    myCenterX = s1.getY();
+    xCorners = new int[corners];
+    yCorners = new int[corners];
+    xCorners[0] = -8;
+    yCorners[0] = -4;
+    xCorners[1] = 8;
+    yCorners[1] = -4;
+    xCorners[2] = 8;
+    yCorners[2] = 4;
+    xCorners[3] = -8;
+    yCorners[3] = 4;
+    myPointDirection = 0;
+    myDirectionX = 0;
+    myDirectionY = 0;
+  }
+  public void setX(int x){ myCenterX = x;}
+  public int getX(){ return (int) myCenterX;}
+  public void setY(int y){ myCenterY = y;}
+  public int getY(){ return (int) myCenterY;}
+  public void setDirectionX(double x){ myDirectionX = x;}
+  public double getDirectionX (){ return (double) myDirectionX; }
+  public void setDirectionY(double y){ myDirectionY = y;}
+  public double getDirectionY (){ return (double) myDirectionY; }
+  public void setPointDirection( int degrees){ myPointDirection = degrees;}
+  public double getPointDirection(){ return (int) myPointDirection; }
 }
 public class Spaceship extends Floater  
 {   
@@ -120,7 +153,7 @@ public class Asteroid extends Floater
   public int rotSpeed;
   public Asteroid(int x, int y)
   {
-      rotSpeed = (int)(Math.random()*12);
+      rotSpeed = (int)(Math.random()*18-9);
       corners = 8;  //the number of corners, a triangular floater has 3   
       xCorners = new int[corners];   
       yCorners = new int[corners];
@@ -143,8 +176,8 @@ public class Asteroid extends Floater
       myColor = 125;   
       myCenterX = x;
       myCenterY = y; //holds center coordinates   
-      myDirectionX = (int)(Math.random()*3);
-      myDirectionY = (int)(Math.random()*3); //holds x and y coordinates of the vector for direction of travel   
+      myDirectionX = (int)(Math.random()*2 - 2);
+      myDirectionY = (int)(Math.random()*2 - 2); //holds x and y coordinates of the vector for direction of travel   
       myPointDirection = Math.random()*360; 
   }
 
@@ -160,6 +193,10 @@ public class Asteroid extends Floater
   public double getPointDirection(){ return (int) myPointDirection; }
   public void move()
   {
+    if(myDirectionX == 0)
+    {
+      myDirectionX = 2 - Math.random()*2;
+    }
     rotate(rotSpeed);
     //Floater.move();
     myCenterX += myDirectionX;    
