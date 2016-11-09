@@ -1,17 +1,23 @@
 //your variable declarations here
 Spaceship s1 = new Spaceship();
+Bullet[] bullets; 
 Star[] stars;
-Asteroid[] rocks; 
+ArrayList <Asteroid> ast; 
 public void setup() 
 {
   //your code here
   size(700, 700);
   background(0);
-rocks = new Asteroid[10];
-  for(int i = 0; i < rocks.length; i++)
+  /*bullets = new Bullet[100];
+  for(int i = 0; i < bullets.length; i++)
   {
-    rocks[i] = new Asteroid((int)(Math.random()*700),(int)(Math.random()*700));
+    bullets[i] = new Bullet();
+  }*/
+  for (int i = 0; i < (int)(Math.random()*20); i++)
+  {
+    ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
   }
+
 stars = new Star[(int)(Math.random()*30 + 30)];
   for(int i = 0; i < stars.length; i++)
   {
@@ -24,11 +30,18 @@ public void draw()
   background(0);
   s1.move();
   s1.show();
-  for(int i = 0; i < rocks.length; i++)
+
+   /*for(int i = 0; i < bullets.length; i++)
   {
-    rocks[i].show();
-    rocks[i].move();
+    bullets[i].show();
+    bullets[i].move();
+  }*/
+  for(int i = 0; i < ast.size(); i++)
+  {
+    //ast.show();
+    //ast.move();
   }
+  
   for(int i = 0; i < stars.length; i ++)
   {  
     stars[i].show();  
@@ -42,10 +55,8 @@ public void keyPressed()
   if(key == 'a'){s1.rotate(-10);}
   if(key == 'w')
     {
-      s1.rocket();
+      //s1.rocket();
       s1.accelerate(.1);
-
-
     }
   if(key == ' ')
   {
@@ -54,7 +65,22 @@ public void keyPressed()
     s1.setDirectionX(0);
     s1.setDirectionY(0);
     s1.setPointDirection((int)(Math.random()*360)); 
+    /*for(int i = 0; i < bullets.length; i++)
+    {
+        bullets[i].setX(s1.getX());
+        bullets[i].setY(s1.getY());
+        bullets[i].setDirectionX(0);
+        bullets[i].setDirectionY(0);
+        bullets[i].setPointDirection((int)s1.getPointDirection());
+    }*/
   }
+  /*if(mousePressed)
+  {
+    for(int i = 0; i < bullets.length; i++)
+    {
+      bullets[i].shoot();
+    }
+  }*/
 
 }
 public class Star
@@ -73,7 +99,7 @@ public class Star
 }
 public class Bullet extends Floater
 {
-  public Bullet(Spaceship s1)
+  public Bullet()
   {
     myColor = 255;
     corners = 4;
@@ -81,17 +107,17 @@ public class Bullet extends Floater
     myCenterX = s1.getY();
     xCorners = new int[corners];
     yCorners = new int[corners];
-    xCorners[0] = -8;
-    yCorners[0] = -4;
-    xCorners[1] = 8;
-    yCorners[1] = -4;
-    xCorners[2] = 8;
-    yCorners[2] = 4;
-    xCorners[3] = -8;
-    yCorners[3] = 4;
-    myPointDirection = 0;
-    myDirectionX = 0;
-    myDirectionY = 0;
+    xCorners[0] = -2;
+    yCorners[0] = -1;
+    xCorners[1] = 2;
+    yCorners[1] = -1;
+    xCorners[2] = 2;
+    yCorners[2] = 1;
+    xCorners[3] = -2;
+    yCorners[3] = 1;
+    myPointDirection = s1.getPointDirection();
+    myDirectionX = s1.getDirectionX();
+    myDirectionY = s1.getDirectionY();
   }
   public void setX(int x){ myCenterX = x;}
   public int getX(){ return (int) myCenterX;}
@@ -103,6 +129,11 @@ public class Bullet extends Floater
   public double getDirectionY (){ return (double) myDirectionY; }
   public void setPointDirection( int degrees){ myPointDirection = degrees;}
   public double getPointDirection(){ return (int) myPointDirection; }
+  public void shoot()
+  {
+    myDirectionX = 10;
+    myDirectionY = 10;
+  }
 }
 public class Spaceship extends Floater  
 {   
@@ -139,13 +170,13 @@ public class Spaceship extends Floater
   public void setPointDirection( int degrees){ myPointDirection = degrees;}
   public double getPointDirection(){ return (int) myPointDirection; }
 
-public void rocket()
+/*public void rocket()
 {
   fill(255);
   line((float)myCenterX - 10, (float)myCenterY + 5, (float)myCenterX - 20, (float)myCenterY + 5);
   line((float)myCenterX - 10, (float)myCenterY, (float)myCenterX - 25, (float)myCenterY);
   line((float)myCenterX - 10, (float)myCenterY - 5, (float)myCenterX - 20, (float)myCenterY - 5);
-}
+}*/
 
 }
 public class Asteroid extends Floater
@@ -175,9 +206,9 @@ public class Asteroid extends Floater
       yCorners[7] = -16;  
       myColor = 125;   
       myCenterX = x;
-      myCenterY = y; //holds center coordinates   
+      myCenterY = y; 
       myDirectionX = (int)(Math.random()*2 - 2);
-      myDirectionY = (int)(Math.random()*2 - 2); //holds x and y coordinates of the vector for direction of travel   
+      myDirectionY = (int)(Math.random()*2 - 2); 
       myPointDirection = Math.random()*360; 
   }
 
