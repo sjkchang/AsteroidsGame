@@ -1,6 +1,6 @@
 //your variable declarations here
 Spaceship s1 = new Spaceship();
-Bullet[] bullets; 
+ArrayList <Bullet> bull; 
 Star[] stars;
 ArrayList <Asteroid> ast; 
 public void setup() 
@@ -8,17 +8,14 @@ public void setup()
   //your code here
   size(700, 700);
   background(0);
-  /*bullets = new Bullet[100];
-  for(int i = 0; i < bullets.length; i++)
-  {
-    bullets[i] = new Bullet();
-  }*/
-  for (int i = 0; i < (int)(Math.random()*20); i++)
+  ast = new ArrayList <Asteroid>();
+  for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
   {
     ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
   }
 
-stars = new Star[(int)(Math.random()*30 + 30)];
+
+  stars = new Star[(int)(Math.random()*30 + 30)];
   for(int i = 0; i < stars.length; i++)
   {
     stars[i] = new Star((int)(Math.random()*700),(int)(Math.random()*700));
@@ -29,25 +26,16 @@ public void draw()
   
   background(0);
   s1.move();
-  s1.show();
-
-   /*for(int i = 0; i < bullets.length; i++)
-  {
-    bullets[i].show();
-    bullets[i].move();
-  }*/
+  s1.show();  
   for(int i = 0; i < ast.size(); i++)
   {
-    //ast.show();
-    //ast.move();
+    ast.get(i).show();
+    ast.get(i).move();
   }
-  
   for(int i = 0; i < stars.length; i ++)
   {  
     stars[i].show();  
   }
-
-  //your code here
 }
 public void keyPressed()
 {
@@ -58,29 +46,22 @@ public void keyPressed()
       //s1.rocket();
       s1.accelerate(.1);
     }
-  if(key == ' ')
+  if(key == 'e')
   {
     s1.setX((int)(Math.random()*700));
     s1.setY((int)(Math.random()*700));
     s1.setDirectionX(0);
     s1.setDirectionY(0);
     s1.setPointDirection((int)(Math.random()*360)); 
-    /*for(int i = 0; i < bullets.length; i++)
-    {
-        bullets[i].setX(s1.getX());
-        bullets[i].setY(s1.getY());
-        bullets[i].setDirectionX(0);
-        bullets[i].setDirectionY(0);
-        bullets[i].setPointDirection((int)s1.getPointDirection());
-    }*/
+
   }
-  /*if(mousePressed)
+  if(key == ' ')
   {
-    for(int i = 0; i < bullets.length; i++)
+    for(int i = 0; i < bullets.size(); i++)
     {
-      bullets[i].shoot();
+      bullets.get(i).shoot();
     }
-  }*/
+  }
 
 }
 public class Star
@@ -181,11 +162,11 @@ public class Spaceship extends Floater
 }
 public class Asteroid extends Floater
 {
-  public int rotSpeed;
+  private int rotSpeed;
   public Asteroid(int x, int y)
   {
       rotSpeed = (int)(Math.random()*18-9);
-      corners = 8;  //the number of corners, a triangular floater has 3   
+      corners = 8;  
       xCorners = new int[corners];   
       yCorners = new int[corners];
       xCorners[0] = 26;
@@ -204,7 +185,7 @@ public class Asteroid extends Floater
       yCorners[6] = -20;
       xCorners[7] = 14;
       yCorners[7] = -16;  
-      myColor = 125;   
+      myColor = 125;
       myCenterX = x;
       myCenterY = y; 
       myDirectionX = (int)(Math.random()*2 - 2);
