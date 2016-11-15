@@ -36,6 +36,9 @@ public void draw()
   {  
     stars[i].show();  
   }
+  if(key == ' ')
+    bull.add(new Bullet());
+
 }
 public void keyPressed()
 {
@@ -53,13 +56,12 @@ public void keyPressed()
     s1.setDirectionX(0);
     s1.setDirectionY(0);
     s1.setPointDirection((int)(Math.random()*360)); 
-
   }
   if(key == ' ')
   {
-    for(int i = 0; i < bullets.size(); i++)
+    for(int i = 0; i < bull.size(); i++)
     {
-      bullets.get(i).shoot();
+      bull.get(i).shoot();
     }
   }
 
