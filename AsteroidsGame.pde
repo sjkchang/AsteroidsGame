@@ -1,6 +1,6 @@
 //your variable declarations here
 Spaceship s1 = new Spaceship();
-ArrayList <Bullet> bull; 
+ArrayList <Bullet> bull = new ArrayList <Bullet>(); 
 Star[] stars;
 ArrayList <Asteroid> ast; 
 public void setup() 
@@ -31,24 +31,28 @@ public void draw()
   {
     ast.get(i).show();
     ast.get(i).move();
+    ast.get(i).getX();
+    ast.get(i).getY();
+    if(ast.get(i).getX() == s1.getX() && ast.get(i).getY() == s1.getY())
+      ast.remove(i);
+
   }
   for(int i = 0; i < stars.length; i ++)
   {  
     stars[i].show();  
   }
-  if(key == ' ')
-    bull.add(new Bullet());
+  for(int i = 0; i < bull.size(); i++)
+  {
+      bull.get(i).show();
+      bull.get(i).move();
+  }
 
 }
 public void keyPressed()
 {
   if( key == 'd'){s1.rotate(10);}
   if(key == 'a'){s1.rotate(-10);}
-  if(key == 'w')
-    {
-      //s1.rocket();
-      s1.accelerate(.1);
-    }
+  if(key == 'w'){s1.accelerate(.1);}
   if(key == 'e')
   {
     s1.setX((int)(Math.random()*700));
@@ -59,10 +63,18 @@ public void keyPressed()
   }
   if(key == ' ')
   {
+    bull.add( new Bullet());
     for(int i = 0; i < bull.size(); i++)
     {
-      bull.get(i).shoot();
+      bull.get(i).setDirectionX((s1.getDirectionX())*2);
+      bull.get(i).setDirectionY((s1.getDirectionY())*2);
+
+
+      bull.get(i).move();
+      if(bull.get(i).getX() > 700 || bull.get(i).getY() > 700)
+        bull.remove(i);
     }
+    System.out.println("shoot");
   }
 
 }
@@ -87,7 +99,7 @@ public class Bullet extends Floater
     myColor = 255;
     corners = 4;
     myCenterX = s1.getX();
-    myCenterX = s1.getY();
+    myCenterY = s1.getY();
     xCorners = new int[corners];
     yCorners = new int[corners];
     xCorners[0] = -2;
@@ -112,11 +124,12 @@ public class Bullet extends Floater
   public double getDirectionY (){ return (double) myDirectionY; }
   public void setPointDirection( int degrees){ myPointDirection = degrees;}
   public double getPointDirection(){ return (int) myPointDirection; }
-  public void shoot()
+  public void move()
   {
-    myDirectionX = 10;
-    myDirectionY = 10;
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
   }
+
 }
 public class Spaceship extends Floater  
 {   
@@ -211,6 +224,7 @@ public class Asteroid extends Floater
     {
       myDirectionX = 2 - Math.random()*2;
     }
+    if(rotSpeed == 0){rotSpeed = (int)(Math.random()*18-9);}
     rotate(rotSpeed);
     //Floater.move();
     myCenterX += myDirectionX;    
