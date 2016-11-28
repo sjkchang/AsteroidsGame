@@ -35,10 +35,7 @@ public void draw()
     ast.get(i).getX();
     ast.get(i).getY();
     int d = (int)dist(s1.getX(), s1.getY(), ast.get(i).getX(), ast.get(i).getY() );
-    if(d < 20)
-      {
-        ast.remove(i);
-      }
+    if(d < 20){ast.remove(i);}
   }
   if(ast.size() == 0)
   {
@@ -51,25 +48,15 @@ public void draw()
   }
   for(int i = 0; i < bull.size(); i++)
   {
-      bull.get(i).show();
-      bull.get(i).move();
-      for(int nI = 0; nI < ast.size(); nI++)
-      {
-        int di = (int)dist(bull.get(i).getX(), bull.get(i).getY(), ast.get(nI).getX(), ast.get(nI).getY() );
-        if(di < 20)
-        {
-          ast.remove(i);
-          score++;
-          System.out.println(score);
-        }
-      }
-    
+    bull.get(i).show();
+    bull.get(i).move();
   }
+
 
 }
 public void keyPressed()
 {
-  if(key == 'd'){s1.rotate(10);}
+  /*if(key == 'd'){s1.rotate(10);}
   if(key == 'a'){s1.rotate(-10);}
   if(key == 'w'){s1.accelerate(.1);}
   if(key == 'e')
@@ -83,18 +70,7 @@ public void keyPressed()
   if(key == ' ')
   {
     bull.add( new Bullet());
-    for(int i = 0; i < bull.size(); i++)
-    {
-      bull.get(i).setDirectionX((s1.getDirectionX())*2);
-      bull.get(i).setDirectionY((s1.getDirectionY())*2);
-
-
-      bull.get(i).move();
-      if(bull.get(i).getX() > 700 || bull.get(i).getY() > 700)
-        bull.remove(i);
-    }
-    System.out.println("shoot");
-  }
+  }*/
 
 }
 public class Star
@@ -113,6 +89,7 @@ public class Star
 }
 public class Bullet extends Floater
 {
+      double dRadians;
   public Bullet()
   {
     myColor = 255;
@@ -130,8 +107,9 @@ public class Bullet extends Floater
     xCorners[3] = -2;
     yCorners[3] = 1;
     myPointDirection = s1.getPointDirection();
-    myDirectionX = s1.getDirectionX();
-    myDirectionY = s1.getDirectionY();
+    dRadians = myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + s1.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) +s1.getDirectionY();
   }
   public void setX(int x){ myCenterX = x;}
   public int getX(){ return (int) myCenterX;}
