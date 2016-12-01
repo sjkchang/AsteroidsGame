@@ -3,12 +3,15 @@ Spaceship s1 = new Spaceship();
 ArrayList <Bullet> bull = new ArrayList <Bullet>(); 
 Star[] stars;
 ArrayList <Asteroid> ast; 
-int score;
+int score = 0;
+int lives = 5;
 public void setup() 
 {
   //your code here
-  size(700, 700);
   background(0);
+  fill(255);
+  text("score = ", 300, 300);
+  size(700, 700);
   ast = new ArrayList <Asteroid>();
   for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
   {
@@ -21,10 +24,11 @@ public void setup()
   {
     stars[i] = new Star((int)(Math.random()*700),(int)(Math.random()*700));
   }
+  
 }
 public void draw() 
 {
-  
+
   background(0);
   s1.move();
   s1.show();  
@@ -35,28 +39,47 @@ public void draw()
     ast.get(i).getX();
     ast.get(i).getY();
     int d = (int)dist(s1.getX(), s1.getY(), ast.get(i).getX(), ast.get(i).getY() );
-    if(d < 20){ast.remove(i);}
+    if(d < 20)
+      {
+        ast.remove(i);
+        lives = lives - 1;
+        System.out.println(lives); 
+      }
+    
   }
   if(ast.size() == 0)
   {
     for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
     ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
   }
-  for(int i = 0; i < stars.length; i ++)
-  {  
-    stars[i].show();  
-  }
+  for(int i = 0; i < stars.length; i ++){stars[i].show();}
   for(int i = 0; i < bull.size(); i++)
   {
     bull.get(i).show();
     bull.get(i).move();
+    int score = 0;
+    for(int nI = 0; nI < ast.size(); nI++)
+    {
+    int d = (int)dist(bull.get(i).getX(), bull.get(i).getY(), ast.get(nI).getX(), ast.get(nI).getY());
+      if(d < 20)
+      {
+        ast.remove(nI);
+        //bull.remove(i);
+        score++;
+      }
+    }
+
+
+
   }
+
+  
 
 
 }
 public void keyPressed()
 {
-  /*if(key == 'd'){s1.rotate(10);}
+  if(key == 'd'){s1.rotate(10);}
   if(key == 'a'){s1.rotate(-10);}
   if(key == 'w'){s1.accelerate(.1);}
   if(key == 'e')
@@ -70,7 +93,7 @@ public void keyPressed()
   if(key == ' ')
   {
     bull.add( new Bullet());
-  }*/
+  }
 
 }
 public class Star
@@ -89,23 +112,17 @@ public class Star
 }
 public class Bullet extends Floater
 {
-      double dRadians;
+  double dRadians;
   public Bullet()
   {
     myColor = 255;
-    corners = 4;
+    corners = 1;
     myCenterX = s1.getX();
     myCenterY = s1.getY();
     xCorners = new int[corners];
     yCorners = new int[corners];
-    xCorners[0] = -2;
-    yCorners[0] = -1;
-    xCorners[1] = 2;
-    yCorners[1] = -1;
-    xCorners[2] = 2;
-    yCorners[2] = 1;
-    xCorners[3] = -2;
-    yCorners[3] = 1;
+    xCorners[0] = 0;
+    yCorners[0] = 0;
     myPointDirection = s1.getPointDirection();
     dRadians = myPointDirection*(Math.PI/180);
     myDirectionX = 5 * Math.cos(dRadians) + s1.getDirectionX();
@@ -125,6 +142,10 @@ public class Bullet extends Floater
   {
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;     
+  }
+  public void show()
+  {
+    ellipse((int)myCenterX, (int)myCenterY, 2, 2);
   }
 
 }
