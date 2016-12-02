@@ -8,28 +8,40 @@ int lives = 5;
 public void setup() 
 {
   //your code here
-  background(0);
+  //background(0);
   fill(255);
-  text("score = ", 300, 300);
+  text("score = ", 300, 300); 
   size(700, 700);
   ast = new ArrayList <Asteroid>();
   for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
   {
     ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
   }
-
-
   stars = new Star[(int)(Math.random()*30 + 30)];
   for(int i = 0; i < stars.length; i++)
   {
+    stroke(255);
     stars[i] = new Star((int)(Math.random()*700),(int)(Math.random()*700));
   }
   
 }
 public void draw() 
 {
-
+  if(lives <= 0)
+  {
+    background(0);
+    fill(255, 255, 255);
+    textSize(50);
+    text("GAME OVER", 220, 320);
+  }
+  else{
   background(0);
+  fill(255);
+  text("score = ", 600, 15);
+  text(score, 650, 15);
+  text("lives = ", 500, 15);
+  text(lives, 550, 15);
+  textSize(12);  
   s1.move();
   s1.show();  
   for(int i = 0; i < ast.size(); i++)
@@ -43,7 +55,7 @@ public void draw()
       {
         ast.remove(i);
         lives = lives - 1;
-        System.out.println(lives); 
+        score = score + 100; 
       }
     
   }
@@ -57,22 +69,24 @@ public void draw()
   {
     bull.get(i).show();
     bull.get(i).move();
-    int score = 0;
+  
     for(int nI = 0; nI < ast.size(); nI++)
     {
     int d = (int)dist(bull.get(i).getX(), bull.get(i).getY(), ast.get(nI).getX(), ast.get(nI).getY());
       if(d < 20)
       {
         ast.remove(nI);
-        //bull.remove(i);
-        score++;
+        bull.remove(i);
+        score = score + 100;
+        break;
+        
       }
     }
 
 
 
   }
-
+  }
   
 
 
@@ -345,4 +359,5 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     endShape(CLOSE);  
   }   
 } 
+
 
