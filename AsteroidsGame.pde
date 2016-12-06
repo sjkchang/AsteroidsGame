@@ -5,12 +5,11 @@ Star[] stars;
 ArrayList <Asteroid> ast; 
 int score = 0;
 int lives = 5;
+int round = 1;
 public void setup() 
 {
   //your code here
-  //background(0);
-  fill(255);
-  text("score = ", 300, 300); 
+  //background(0); 
   size(700, 700);
   ast = new ArrayList <Asteroid>();
   for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
@@ -33,69 +32,97 @@ public void draw()
     fill(255, 255, 255);
     textSize(50);
     text("GAME OVER", 220, 320);
+    textSize(18);
+    text("Press r to restart", 300, 345);
+    if(key == 'r' && lives <= 0)
+    {
+      lives = 5;
+      score = 0;
+      round = 1;
+      s1.setX(350);
+      s1.setY(350);
+      s1.setDirectionX(0);
+      s1.setDirectionY(0);
+      s1.setPointDirection(0);
+      for(int i = 0; i < ast.size(); i++){ast.remove(i);}
+      for (int i = 0; i < (int)(Math.random()*5 + 7); i++)
+      {
+        ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
+      }
+    }
   }
-  else{
-  background(0);
-  fill(255);
-  text("score = ", 600, 15);
-  text(score, 650, 15);
-  text("lives = ", 500, 15);
-  text(lives, 550, 15);
-  textSize(12);  
-  s1.move();
-  s1.show();  
-  for(int i = 0; i < ast.size(); i++)
+  else
   {
-    ast.get(i).show();
-    ast.get(i).move();
-    ast.get(i).getX();
-    ast.get(i).getY();
-    int d = (int)dist(s1.getX(), s1.getY(), ast.get(i).getX(), ast.get(i).getY() );
-    if(d < 20)
+    background(0);
+    fill(255);
+    text("score = ", 600, 15);
+    text(score, 650, 15);
+    text("lives = ", 500, 15);
+    text(lives, 550, 15);
+    text("Round = ", 400, 15);
+    text(round, 450, 15);
+    textSize(12);  
+    s1.move();
+    s1.show(); 
+    for(int i = 0; i < ast.size(); i++)
+    {
+      ast.get(i).show();
+      ast.get(i).move();
+      ast.get(i).getX();
+      ast.get(i).getY();
+      int d = (int)dist(s1.getX(), s1.getY(), ast.get(i).getX(), ast.get(i).getY() );
+      if(d < 25)
       {
         ast.remove(i);
         lives = lives - 1;
         score = score + 100; 
       }
-    
-  }
-  if(ast.size() == 0)
-  {
-    for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
-    ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
-  }
-  for(int i = 0; i < stars.length; i ++){stars[i].show();}
-  for(int i = 0; i < bull.size(); i++)
-  {
-    bull.get(i).show();
-    bull.get(i).move();
-  
-    for(int nI = 0; nI < ast.size(); nI++)
+    }
+    if(ast.size() == 0)
     {
-    int d = (int)dist(bull.get(i).getX(), bull.get(i).getY(), ast.get(nI).getX(), ast.get(nI).getY());
-      if(d < 20)
+      for (int i = 0; i < (int)(Math.random()*5 + 10); i++)
+      ast.add(new Asteroid((int)(Math.random()*700), (int)(Math.random()*700)));
+      round++;
+    }
+    for(int i = 0; i < stars.length; i ++){stars[i].show();}
+    for(int i = 0; i < bull.size(); i++)
+    {
+      bull.get(i).show();
+      bull.get(i).move();
+  
+      for(int nI = 0; nI < ast.size(); nI++)
       {
-        ast.remove(nI);
-        bull.remove(i);
-        score = score + 100;
-        break;
-        
+        int d = (int)dist(bull.get(i).getX(), bull.get(i).getY(), ast.get(nI).getX(), ast.get(nI).getY());
+        if(d < 25)
+        {
+          ast.remove(nI);
+          bull.remove(i);
+          score = score + 100;
+          break;
+        }
       }
     }
-
-
-
   }
-  }
-  
-
-
 }
 public void keyPressed()
 {
-  if(key == 'd'){s1.rotate(10);}
-  if(key == 'a'){s1.rotate(-10);}
-  if(key == 'w'){s1.accelerate(.1);}
+  if(key == 'd')
+    {
+      s1.rotate(10);
+      if(key == 'w'){s1.accelerate(.1);}
+    }
+  if(key == 'a')
+  {
+    s1.rotate(-10);
+    if(key == 'w'){s1.accelerate(.1);}
+  }
+  if(key == 'w')
+    {
+      s1.accelerate(.1);
+      if(key == 'd'){s1.rotate(10);}
+      if(key == 'a'){s1.rotate(-10);}
+      if(key == ' '){bull.add(new Bullet());}
+    }
   if(key == 'e')
   {
     s1.setX((int)(Math.random()*700));
@@ -157,10 +184,7 @@ public class Bullet extends Floater
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;     
   }
-  public void show()
-  {
-    ellipse((int)myCenterX, (int)myCenterY, 2, 2);
-  }
+  public void show(){ellipse((int)myCenterX, (int)myCenterY, 2, 2);}
 
 }
 public class Spaceship extends Floater  
